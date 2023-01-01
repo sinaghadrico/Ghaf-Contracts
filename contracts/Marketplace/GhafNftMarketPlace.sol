@@ -65,4 +65,54 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
 
         return true;
     }
+
+    /// @notice                     Bid on an auction to get a NFT
+    /// @dev                        Submit the asking price in order to complete the bid on ( msg value )
+    /// @param _nftContractAddress  Address of NFT token contract
+    /// @param _tokenId             A number that identify the NFT within the NFT token contract
+    /// @param _bidPrice            The price that is bigger than the initial price and last bid price is on this action
+    function bidForNFT(
+        address _nftContractAddress,
+        uint256 _tokenId,
+        uint256 _bidPrice
+    )
+        external
+        payable
+        override
+        nonZeroAddress(_nftContractAddress)
+        nonZeroValue(_bidPrice)
+        returns (bool)
+    {
+        Auction memory auctionItem = auctions[_nftContractAddress][_tokenId];
+
+        require(
+            block.timestamp < auctionItem.closeTimestamp,
+            "auction is closed"
+        );
+
+        require(
+            _bidPrice > auctionItem.highestBid &&
+                _bidPrice >= auctionItem.initialPrice,
+            "bid price is low"
+        );
+
+        require(
+            msg.value == _bidPrice,
+            "please submit the asking price in order to complete the bid, incompatible msg value"
+        );
+
+        if (auctionItem.highestBidder != address(0)) {
+            Address.sendValue(
+                payable(auctionItem.highestBidder),
+                auctionItem.highestBid
+            );
+        }
+
+        auctions[_nftContractAddress][_tokenId].highestBidder = _msgSender();
+        auctions[_nftContractAddress][_tokenId].highestBid = _bidPrice;
+
+        emit BidCreated(_msgSender(), _bidPrice, _tokenId, _nftContractAddress);
+
+        return true;
+    }
 }

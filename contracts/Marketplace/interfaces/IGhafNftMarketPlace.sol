@@ -28,6 +28,13 @@ interface IGhafNftMarketPlace {
         address nftContractAddress
     );
 
+    event BidCreated(
+        address bidder,
+        uint256 bidPrice,
+        uint256 indexed tokenId,
+        address nftContractAddress
+    );
+
     // Read-only functions
 
     // State-changing functions
@@ -38,4 +45,10 @@ interface IGhafNftMarketPlace {
         uint256 _initialPrice,
         uint256 _auctionDuration
     ) external returns (bool);
+
+    function bidForNFT(
+        address _nftContractAddress,
+        uint256 _tokenId,
+        uint256 _bidPrice
+    ) external payable returns (bool);
 }
