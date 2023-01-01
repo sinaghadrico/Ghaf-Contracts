@@ -22,7 +22,7 @@ yarn build
 To deploy and verify contract on mumbai:
 
 ```shell
-deploy:mumbai
+yarn deploy:mumbai
 ```
 
 You can also run the full test suite with the following command:
