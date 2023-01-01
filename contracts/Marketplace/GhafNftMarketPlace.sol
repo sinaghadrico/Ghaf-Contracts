@@ -115,4 +115,107 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
 
         return true;
     }
+
+    /// @notice                    Cancel an auction
+    /// @dev                       Only seller can cancel
+    /// @param _nftContractAddress Address of NFT token contract
+    /// @param _tokenId            A number that identify the NFT within the NFT token contract
+    function cancelAuction(
+        address _nftContractAddress,
+        uint256 _tokenId
+    )
+        external
+        payable
+        override
+        nonZeroAddress(_nftContractAddress)
+        returns (bool success)
+    {
+        Auction memory auctionItem = auctions[_nftContractAddress][_tokenId];
+
+        require(_msgSender() == auctionItem.seller, "only seller can cancel");
+
+        require(
+            block.timestamp < auctionItem.closeTimestamp,
+            "auction is closed"
+        );
+
+        if (auctionItem.highestBidder != address(0)) {
+            Address.sendValue(
+                payable(auctionItem.highestBidder),
+                auctionItem.highestBid
+            );
+        }
+        IERC721(_nftContractAddress).transferFrom(
+            address(this),
+            auctionItem.seller,
+            _tokenId
+        );
+
+        emit AuctionCancelled(_nftContractAddress, _tokenId, _msgSender());
+
+        delete auctions[_nftContractAddress][_tokenId];
+
+        return true;
+    }
+
+    /// @notice                      Finish an auction
+    /// @dev                         Only seller can cancel , Call this func after auction is closed
+    /// @param _nftContractAddress   Address of NFT token contract
+    /// @param _tokenId              A number that identify the NFT within the NFT token contract
+    function finishAuction(
+        address _nftContractAddress,
+        uint256 _tokenId
+    )
+        external
+        payable
+        override
+        nonZeroAddress(_nftContractAddress)
+        returns (bool)
+    {
+        Auction memory auctionItem = auctions[_nftContractAddress][_tokenId];
+
+        require(
+            block.timestamp > auctionItem.closeTimestamp,
+            "auction is not closed yet"
+        );
+
+        if (auctionItem.highestBidder != address(0)) {
+            Address.sendValue(
+                payable(auctionItem.seller),
+                auctionItem.highestBid
+            );
+
+            //TODO update fee management
+
+            // Address.sendValue(
+            //     payable(auctionItem.seller),
+            //     (auctionItem.highestBid * 99) / 100
+            // );
+            // Address.sendValue(payable(owner()), auctionItem.highestBid / 100);
+
+            IERC721(_nftContractAddress).transferFrom(
+                address(this),
+                auctionItem.highestBidder,
+                _tokenId
+            );
+        } else {
+            IERC721(_nftContractAddress).transferFrom(
+                address(this),
+                auctionItem.seller,
+                _tokenId
+            );
+        }
+
+        emit AuctionFinished(
+            _nftContractAddress,
+            _tokenId,
+            _msgSender(),
+            auctionItem.highestBidder,
+            auctionItem.highestBid
+        );
+
+        delete auctions[_nftContractAddress][_tokenId];
+
+        return true;
+    }
 }

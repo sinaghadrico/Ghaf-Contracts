@@ -28,6 +28,20 @@ interface IGhafNftMarketPlace {
         address nftContractAddress
     );
 
+    event AuctionCancelled(
+        address nftContractAddress,
+        uint256 indexed tokenId,
+        address seller
+    );
+
+    event AuctionFinished(
+        address nftContractAddress,
+        uint256 indexed tokenId,
+        address finisher,
+        address highestBidder,
+        uint256 highestBid
+    );
+
     event BidCreated(
         address bidder,
         uint256 bidPrice,
@@ -50,5 +64,15 @@ interface IGhafNftMarketPlace {
         address _nftContractAddress,
         uint256 _tokenId,
         uint256 _bidPrice
+    ) external payable returns (bool);
+
+    function cancelAuction(
+        address _nftContractAddress,
+        uint256 _tokenId
+    ) external payable returns (bool);
+
+    function finishAuction(
+        address _nftContractAddress,
+        uint256 _tokenId
     ) external payable returns (bool);
 }
