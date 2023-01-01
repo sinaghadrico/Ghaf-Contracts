@@ -19,6 +19,22 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
 
     mapping(address => mapping(uint256 => Auction)) public auctions;
 
+    /// @notice                    Returns an auction details
+    /// @param _nftContractAddress Address of NFT token contract
+    /// @param _tokenId            A number that identify the NFT within the NFT token contract
+    function getAuctionDetails(
+        address _nftContractAddress,
+        uint256 _tokenId
+    )
+        external
+        view
+        override
+        nonZeroAddress(_nftContractAddress)
+        returns (Auction memory auction)
+    {
+        auction = auctions[_nftContractAddress][_tokenId];
+    }
+
     /// @notice                     List NFT to auction List for sale
     /// @dev                        Call approve function of Nft Contract before the call this func
     /// @param _nftContractAddress  Address of NFT token contract

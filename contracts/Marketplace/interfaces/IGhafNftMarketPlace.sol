@@ -51,6 +51,11 @@ interface IGhafNftMarketPlace {
 
     // Read-only functions
 
+    function getAuctionDetails(
+        address _nftContractAddress,
+        uint256 _tokenId
+    ) external view returns (Auction memory);
+
     // State-changing functions
 
     function listMyNFTToSale(
