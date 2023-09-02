@@ -58,7 +58,7 @@ interface IGhafNftMarketPlace {
 
     // State-changing functions
 
-    function listMyNFTToSale(
+    function listNFT(
         address _nftContractAddress,
         uint256 _tokenId,
         uint256 _initialPrice,
@@ -74,10 +74,10 @@ interface IGhafNftMarketPlace {
     function cancelAuction(
         address _nftContractAddress,
         uint256 _tokenId
-    ) external payable returns (bool);
+    ) external returns (bool);
 
     function finishAuction(
         address _nftContractAddress,
         uint256 _tokenId
-    ) external payable returns (bool);
+    ) external returns (bool);
 }

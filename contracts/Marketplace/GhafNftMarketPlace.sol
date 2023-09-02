@@ -42,7 +42,7 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
     /// @param _initialPrice        The initial price value that can be bid on an action
     /// @param _auctionDuration     The period of time (timestamp) each user can bid on an action
     /// @return                     True if auction is added successfully
-    function listMyNFTToSale(
+    function listNFT(
         address _nftContractAddress,
         uint256 _tokenId,
         uint256 _initialPrice,
@@ -141,7 +141,6 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
         uint256 _tokenId
     )
         external
-        payable
         override
         nonZeroAddress(_nftContractAddress)
         returns (bool success)
@@ -183,7 +182,6 @@ contract GhafNftMarketPlace is IGhafNftMarketPlace, Ownable {
         uint256 _tokenId
     )
         external
-        payable
         override
         nonZeroAddress(_nftContractAddress)
         returns (bool)
