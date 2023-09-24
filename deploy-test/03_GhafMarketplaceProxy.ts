@@ -8,17 +8,27 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const deployedContract = await deploy("GhafNftMarketPlace", {
+  const ghafMarketPlaceLogic = await deploy("GhafMarketPlaceLogic", {
     from: deployer,
     log: true,
     skipIfAlreadyDeployed: true,
-    args: [],
+  });
+
+  const theArgs = [ghafMarketPlaceLogic.address, deployer, "0x"];
+
+  const deployedContract = await deploy("GhafMarketPlaceProxy", {
+    from: deployer,
+    log: true,
+    skipIfAlreadyDeployed: true,
+    args: theArgs
   });
   await hre.run("verify:verify", {
     address: deployedContract.address,
-    constructorArguments: [],
+    constructorArguments: theArgs,
+    contract:
+      "contracts/GhafMarketplace/GhafMarketPlaceProxy.sol:GhafMarketPlaceProxy",
   });
 };
 
 export default func;
-export const tags = ["GhafNftMarketPlace"];
+export const tags = ["GhafMarketPlaceProxy"];

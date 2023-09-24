@@ -4,6 +4,7 @@
     "build": "hardhat compile && tsc",
     "clean": "rimraf artifacts && rimraf cache && rimraf deployments/localhost && rimraf src/types/*",
     "deploy:mumbai": "hardhat deploy --network mumbai --export export/abi/mumbai.json --deploy-scripts deploy-test",
+    "init:mumbai": "hardhat deploy --network mumbai --export export/abi/mumbai.json --deploy-scripts scripts",
     "test": "hardhat test",
     "help": "hardhat help",
     "prettier": "prettier .",
@@ -57,6 +58,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0",
+    "@openzeppelin/contracts-upgradeable": "^4.7.3",
     "config": "^3.3.8"
   }
 }

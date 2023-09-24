@@ -10,6 +10,8 @@ let recipientAddress: Address;
 const tokenId = 1;
 const tokenURI =
   "https://cloudflare-ipfs.com/ipfs/bafybeiet75yzrovqoybm3khggrxpolqxl2tmzloxdfjfhqkt772x6vft5a/1.json";
+  const nativeTokenAddress =
+  "0x0000000000000000000000000000000000000001";
 
 describe("GhafNFT contract", function () {
   async function deployGhafNFTFixture() {
