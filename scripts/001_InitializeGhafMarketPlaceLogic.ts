@@ -15,6 +15,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const ghafMarketPlaceLogic = await deployments.get("GhafMarketPlaceLogic");
     const ghafMarketPlaceProxy = await deployments.get("GhafMarketPlaceProxy");
 
+
+    // const provider = hre.ethers.provider;
+    // const privKey = "b773c1f5b19f93a2df58ef2773837fa6d8663d85f39dee40cce03231f201470f";
+    // const signer_wallet = new Wallet(privKey);
+    // const signer = await signer_wallet.connect(provider);
+    // const ghafMarketPlaceProxyContract = await ethers.getContractFactory("GhafMarketPlaceProxy");
+    // const ghafMarketPlaceProxyContract1 = await ghafMarketPlaceProxyContract.connect(signer);
+
     const ghafMarketPlaceLogicFactory = await ethers.getContractFactory(
         "GhafMarketPlaceLogic",
         {

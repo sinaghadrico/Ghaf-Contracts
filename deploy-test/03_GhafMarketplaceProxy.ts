@@ -8,11 +8,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
-  const ghafMarketPlaceLogic = await deploy("GhafMarketPlaceLogic", {
-    from: deployer,
-    log: true,
-    skipIfAlreadyDeployed: true,
-  });
+  const ghafMarketPlaceLogic = await deployments.get("GhafMarketPlaceLogic");
 
   const theArgs = [ghafMarketPlaceLogic.address, deployer, "0x"];
 

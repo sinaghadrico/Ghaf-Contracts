@@ -13,7 +13,10 @@ interface IGhafMarketPlaceLogic is IGhafMarketPlaceStorage {
         address nftContractAddress, 
         uint256 tokenId, 
         address seller,
-        GhafMarketPlaceLib.BuyTypes buyType
+        GhafMarketPlaceLib.BuyTypes buyType,
+        uint256 deadline,
+        uint initialAmount,
+        address initialPaymentToken
     );
 
     event NftDelisted(
@@ -92,7 +95,10 @@ interface IGhafMarketPlaceLogic is IGhafMarketPlaceStorage {
 	function listNft(
         address _nftContractAddress,
         uint256 _tokenId,
-        GhafMarketPlaceLib.BuyTypes _buyType
+        GhafMarketPlaceLib.BuyTypes _buyType,
+        uint256 _auctionDuration,
+        uint _initialAmount,
+        address _initialPaymentToken
 	) external returns (bool);
 
     function delistNft(address _nftContractAddress,uint256 _tokenId) external returns (bool);
